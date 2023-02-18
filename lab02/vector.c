@@ -58,7 +58,7 @@ vector_t *vector_new() {
     vector_t *retval;
 
     /* First, we need to allocate memory on the heap for the struct */
-    retval = malloc(sizeof(vector_t));
+    retval = (vector_t*) malloc(sizeof(vector_t));
 
     /* Check our return value to make sure we got memory */
     if (retval == NULL) {
@@ -111,7 +111,7 @@ void vector_delete(vector_t *v) {
     free(v->data);
     free(v);
     
-}t
+}
 
 /* Set a value in the vector. If the extra memory allocation fails, call
    allocation_failed(). */
@@ -119,23 +119,25 @@ void vector_set(vector_t *v, size_t loc, int value) {
     /* What do you need to do if the location is greater than the size we have
      * allocated?  Remember that unset locations should contain a value of 0.
      */
-     size_t orig = v->size 
+     size_t orig = v->size ;
+
      if (loc > sizeof(v->data)/sizeof(int)){
-            int * temp = realloc(v , loc+1)
+            int * temp = realloc(v , loc+1);
+            
             if (temp == NULL) {
                 allocation_failed();
             }
             else {
-                
-                v = temp;
-                for (int i = size-1; i<loc;i++; ){
-                        v[i]=0;
+                v->data = temp;
+                for (int i = orig; i<loc;i++ ){
+                        v->data[i]=0;
                 }
-                v[loc] = value;
+                v->data[loc] = value;
+            
             }
-     }
+            }
      else {
-            v[loc] = value;
+            v->data[loc] = value;
      }
 
     /* YOUR SOLUTION HERE */
